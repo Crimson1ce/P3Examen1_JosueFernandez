@@ -124,35 +124,53 @@ bool vive(int** tablero, int pX, int pY, int filas, int columnas) {
 
     int vecinos = 0;
 
+    //Izquierda
     if (pX - 1 >= 0) {
+        //Lado
         if(tablero[pX - 1][pY]) { vecinos++; }
+        //Esquina superior
         if (pY - 1 >= 0) {
             if(tablero[pX - 1][pY - 1]) { vecinos++; }
         }
+        //Esquina inferior
         if (pY + 1 < columnas) {
             if(tablero[pX - 1][pY + 1]) { vecinos++; }
         }
     }
     
+    //Derecha
     if (pX + 1 < filas) {
+        //Lado
         if(tablero[pX + 1][pY]) { vecinos++; }
+        //Esquina superior
         if (pY - 1 >= 0) {
             if(tablero[pX + 1][pY - 1]) { vecinos++; }
         }
+        //Esquina inferior
         if (pY + 1 < filas) {
             if(tablero[pX + 1][pY + 1]) { vecinos++; }
         }
     }
     
+    //Lado superior
     if (pY - 1 >= 0) {
         if(tablero[pX][pY - 1]) { vecinos++; }
     }
-    
+    //Lado inferior
     if (pY + 1 < columnas) {
         if(tablero[pX][pY - 1]) { vecinos++; }
     }
 
-    return false;
+    //Evaluación
+    if (vecinos < 2 || vecinos > 3) { 
+        return false; //Una viva muere por subpoblación o sobrepoblación
+    } else {
+        if(vecinos == 3){
+            return true;
+        } else { //vecinos==2
+            if(tablero[pX][pY]) { return true; } else { return false; }
+        }
+    }
 }
 
 void conway(int** tablero, int filas, int columnas, int turnos) {
