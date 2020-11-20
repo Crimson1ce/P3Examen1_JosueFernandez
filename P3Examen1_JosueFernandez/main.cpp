@@ -61,6 +61,9 @@ int main(int argc, char** argv) {
                 //Generamos el tablero aleatorio
                 matriz = generarTablero(filas,columnas);
                 
+                //Limpiamos el buffer ?
+                cin.ignore();
+                
                 //Llamamos la función de simulación
                 conway(matriz,filas,columnas,turnos,1);
 
@@ -68,7 +71,6 @@ int main(int argc, char** argv) {
                 
             case 2: //Tablero predefinido
                 filas = columnas = 20;
-                cout << "\n" << filas << " " << columnas << endl;
                 
                 cout << "Se jugaracon el tablero predefinido.\n";
 
@@ -81,6 +83,9 @@ int main(int argc, char** argv) {
                 
                 //Conseguimos el tablero predeinido
                 matriz = matrizPredeterminada();
+                
+                //Limpiamos el buffer ?
+                cin.ignore();
                 
                 //Llamamos la función de simulación
                 conway(matriz,filas,columnas,turnos,1);
@@ -98,6 +103,7 @@ int main(int argc, char** argv) {
         liberarMatriz(matriz,filas);
 
     } while (opcion != 3);
+    
     //Por si acaso
     liberarMatriz(matriz, filas);
     return 0;
