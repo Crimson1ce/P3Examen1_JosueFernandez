@@ -11,11 +11,13 @@ using std::endl;
 //Imprime el tablero para el juego de la vida
 void imprimirTablero(int** matriz, int filas, int columnas);
 //Libera la memoria de una matriz memor
-void liberarMatriz(int** matriz, int filas);
+void liberarMatriz(int**& matriz, int filas);
 //Genera un tablero aleatorio con las medidas definidas por el usuario
 int** generarTablero(int filas, int columnas);
 //Simula el juego de la vida recursivamente
 void conway(int** tablero, int filas, int columnas, int turnos);
+//Determina si una casilla vive hasta la siguiente generación
+bool vive(int** tablero, int pX, int pY, int filas, int columnas);
 
 int main(int argc, char** argv) {
 
@@ -56,6 +58,9 @@ int main(int argc, char** argv) {
 
     imprimirTablero(matriz_predeterminada, x, y);
 
+    bool viv = false;
+    cout << "La casilla 2,14 tiene " << (viv = vive(matriz_predeterminada,2,14,x,y)) << " casillas y " << (viv ? "si" : "no") << " pasa a la siguiente generacion\n" ;
+    
     int** matriz = generarTablero(x, y);
     imprimirTablero(matriz, x, y);
 
@@ -91,7 +96,7 @@ void imprimirTablero(int** matriz, int filas, int columnas) {
     }
 }
 
-void liberarMatriz(int** matriz, int filas) {
+void liberarMatriz(int**& matriz, int filas) {
     if (matriz != NULL) {
         for (int i = 0; i < filas; i++) {
             if (matriz[i] != NULL) {
@@ -124,43 +129,45 @@ bool vive(int** tablero, int pX, int pY, int filas, int columnas) {
 
     int vecinos = 0;
 
-    //Izquierda
+    //Arriba
     if (pX - 1 >= 0) {
         //Lado
         if(tablero[pX - 1][pY]) { vecinos++; }
-        //Esquina superior
+        //Esquina iquierda
         if (pY - 1 >= 0) {
             if(tablero[pX - 1][pY - 1]) { vecinos++; }
         }
-        //Esquina inferior
+        //Esquina derecha
         if (pY + 1 < columnas) {
             if(tablero[pX - 1][pY + 1]) { vecinos++; }
         }
     }
     
-    //Derecha
+    //Abajo
     if (pX + 1 < filas) {
         //Lado
         if(tablero[pX + 1][pY]) { vecinos++; }
-        //Esquina superior
+        //Esquina iquierda
         if (pY - 1 >= 0) {
             if(tablero[pX + 1][pY - 1]) { vecinos++; }
         }
-        //Esquina inferior
-        if (pY + 1 < filas) {
+        //Esquina derecha
+        if (pY + 1 < columnas) {
             if(tablero[pX + 1][pY + 1]) { vecinos++; }
         }
     }
     
-    //Lado superior
+    //Lado izquierdo
     if (pY - 1 >= 0) {
         if(tablero[pX][pY - 1]) { vecinos++; }
     }
-    //Lado inferior
+    //Lado derecho
     if (pY + 1 < columnas) {
-        if(tablero[pX][pY - 1]) { vecinos++; }
+        if(tablero[pX][pY + 1]) { vecinos++; }
     }
 
+    cout << "(" << vecinos << ")";
+    
     //Evaluación
     if (vecinos < 2 || vecinos > 3) { 
         return false; //Una viva muere por subpoblación o sobrepoblación
